@@ -1,322 +1,216 @@
-
-// // sba3jji0 --- >  cloudnary 
-// import React, {useState}from 'react'
-// import axios from "axios" ;
-// import { toast } from "react-toastify";
-// import { useNavigate } from 'react-router-dom';
-
-// const initialState = {
-//   title : " " ,
-//   description : " " ,
-//   imageUrl: " "
-// }
-
-// const getDate = () => {
-//   let today = new Date();
-
-//   let dd = String(today.getDate()).padStart(2, '0');
-//   let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 01
-//   let yyyy = today.getFullYear();
-
-// today = mm + '/' + dd + '/' + yyyy;
-
-//   return today;
-// };
-
-
-
-// function AddEditBlog() {
-//   const [formValue ,setFormValue] = useState(initialState);
-//   const navigate = useNavigate()
- 
-//   const {  title , description,  imageUrl} = formValue ;
-
-// //  handleSubmit
-// async function handleSubmit(e) {
-//   e.preventDefault();
-
-//   // ... validation logic
-
-//   try {
-//       const currentDate = getDate();
-//       const updatedBlogData = { ...formValue, date: currentDate };
-
-//       const response = await axios.post('http://localhost:5000/blogs', updatedBlogData);
-
-//       if (response.status === 201) {
-//           toast.success('Blog Created Successfully');
-//       } else {
-//           toast.error('Something went wrong');
-//       }
-//   } catch (error) {
-//       // Handle errors here, e.g., log the error or display a user-friendly message
-//       console.error('Error creating blog:', error);
-//       toast.error('Error creating blog. Please try again later.');
-//   }
-//   setFormValue({title:' ', description:' ', imageUrl:''})
-//   navigate('/')
-// }
-
-//   // onInputChange
-//   const onInputChange = (e) => {
-//     let {name, value} = e.target;
-//     setFormValue({...formValue, [name]: value})
-//   } ;
-
-// //  onUploadImage
-
-// // const onUploadImage = (file) => {
-// //   console.log('file', file);
-
-// //   const formData = new FormData();
-// //   formData.append('file', file);
-// //   formData.append('upload_preset', 'jnecgtem');
-// //    axios.post('http://api.cloudinary.com/v1_1/ddbgwneok/image/upload',formData)
-// //     .then((response) => {
-// //       console.log("response", response)
-// //       toast.success(" Image uploaded ")
-// //       setFormValue({...formValue, imageUrl:response.data.url})
-// //     })
-// //     .catch((error) => {
-// //       // console.error("something went wrong");
-// //     });
-// // };
-
- 
-
-//   return (
-//     <form className="grid grid-cols-12 gap-3 mt-10 ml-4 mr-4" onSubmit={handleSubmit}>
-//       <p className="text-2xl font-bold col-span-12">Add Blog</p>
-
-//        {/*    Title */}
-//       <div className="col-span-12">
-//         <label htmlFor="blogTitle" className="block text-gray-700 font-bold mb-2">
-//            Title
-//         </label>
-//         <input
-//           type="text"
-//           name= "title"
-//           className="border rounded-md px-3 py-2 w-full"
-//           value={title || " "}
-//           onChange={onInputChange}
-//           validation = "please provide a title"
-          
-//         />
-//       </div>
-//        {/* description */}
-
-//       <div className="col-span-12">
-//         <label htmlFor="blogContent" className="block text-gray-700 font-bold mb-2">
-//           description
-//         </label>
-//         <textarea
-//         className="border rounded-md px-3 py-2 w-full"
-//         rows={4}
-//         value={description || " "}
-//         name="description"
-//         onChange={onInputChange}
-//         placeholder="Please provide a description"
-       
-//        />
-       
-        
-       
-//       </div>
-     
-//      {/* image */}
-//       <div className="col-span-12">
-//       <label htmlFor="blogImage" className="block text-gray-700 font-bold mb-2">
-//       Image 
-//       </label>
-//   {/* <div className="flex items-center space-x-2">
-//   <input
-//   type="file"
-//   className="border rounded-md px-3 py-2 w-full"
-//   name="title"
-//   // onChange={(e) => onUploadImage(console.log)}
-//   required
-//   label="Title"
-//   validation="Please provide a title"
-
-// />
-    
-//   </div> */}
-//   <div className="col-span-12">
-//   <label htmlFor="blogImage" className="block text-gray-700 font-bold mb-2">
-//     Image 
-//   </label>
-//   <div className="flex items-center space-x-2">
-//     <input
-//       type="file"
-//       className="border rounded-md px-3 py-2 w-full"
-//       name="imageUrl" // Changed the name to 'image'
-//       // onChange={onUploadImage}
-  
-//       label="Image"
-//     />
-//   </div>
-// </div>
-//       </div>
-      
-//       <div className="col-span-12  ">
-//       <button
-//   type="submit"
-//   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-//   // onClick={onUploadImage}
-// >
-//   Add
-// </button>
-
-// <button
-//   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-//   onClick={() => { /* Your go back logic here */ }}
-// >
-//   Go Back
-// </button>
-//       </div>
-//     </form>   
-
-//   );
-// }
-
-// export default AddEditBlog;
-
-
-
-
-
-
-
-
-
-
-
-import React, { useState } from 'react';
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 
 const initialState = {
-  title: '',
-  description: '',
-  imageUrl: '',
+  title: "",
+  description: "",
+  category: "",
+  imageUrl: "",
 };
 
-const getDate = () => {
-  let today = new Date();
+const options = ["Travel", "Fashion", "Fitness", "Sports", "Food", "Tech"];
 
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 01
-  let yyyy = today.getFullYear();
-
-  today = mm + '/' + dd + '/' + yyyy;
-
-  return today;
-};
-
-function AddEditBlog() {
+const AddEditBlog = () => {
   const [formValue, setFormValue] = useState(initialState);
+  const [categoryErrMsg, setCategoryErrMsg] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const { title, description, category, imageUrl } = formValue;
+
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const { title, description, imageUrl } = formValue;
+  useEffect(() => {
+    if (id) {
+      setEditMode(true);
+      getSingleBlog(id);
+    } else {
+      setEditMode(false);
+      setFormValue({ ...initialState });
+    }
+  }, [id]);
 
-  async function handleSubmit(e) {
+  const getSingleBlog = async (id) => {
+    const singleBlog = await axios.get(`http://localhost:5174/blogs/${id}`);
+    if (singleBlog.status === 200) {
+      setFormValue({ ...singleBlog.data });
+    } else {
+      toast.error("Something went wrong getting single blog");
+    }
+  };
+
+  const getDate = () => {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth()).padStart(2, "0"); // January is 0!
+    let yyyy = today.getFullYear();
+
+    today = mm + "/" + dd + "/" + yyyy;
+    return today;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!title || !description) {
-      return toast.error('Please fill in all fields.');
+    if (!category) {
+      setCategoryErrMsg("Please select a category");
     }
 
-    try {
-      const formData = new FormData();
-      const file = e.target.elements[imageUrl].files[0];
+    const imageValidation = !editMode ? imageUrl : true;
 
-      if (file) {
-        formData.append('file', file);
-        formData.append('upload_preset', 'sba3jji0'); // Replace with your Cloudinary preset
-
-        const uploadResponse = await axios.post('https://api.cloudinary.com/v1_1/ddbgwneok/image/upload', formData);
-        setFormValue({ ...formValue, imageUrl: uploadResponse.data.url });
-      }
-
+    if (title && description && imageUrl && category) {
       const currentDate = getDate();
-      const updatedBlogData = { ...formValue, date: currentDate };
 
-      const response = await axios.post('http://localhost:5000/blogs', updatedBlogData);
-
-      if (response.status === 201) {
-        toast.success('Blog Created Successfully');
-        navigate('/');
+      if (!editMode) {
+        const updatedBlogData = { ...formValue, date: currentDate };
+        const response = await axios.post(
+          "http://localhost:5174/blogs",
+          updatedBlogData
+        );
+        if (response.status === 201) {
+          toast.success("Blog Created Successfully");
+        } else {
+          toast.error("Something went wrong in posting to db.json");
+        }
       } else {
-        toast.error('Something went wrong');
+        const response = await axios.put(
+          `http://localhost:5174/blogs/${id}`,
+          formValue
+        );
+        if (response.status === 200) {
+          toast.success("Blog Updated Successfully");
+        } else {
+          toast.error("Something went wrong in updating to db.json");
+        }
       }
-    } catch (error) {
-      console.error('Error creating blog:', error);
-      toast.error('Error creating blog. Please try again later.');
+      setFormValue({ title: "", description: "", category: "", imageUrl: "" });
+      navigate("/");
     }
-  }
+  };
 
   const onInputChange = (e) => {
     let { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
   };
 
+  const onUploadImage = (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", 'sba3jji0');
+    axios
+      .post(
+        `http://api.cloudinary.com/v1_1/ddbgwneok/image/upload`,
+        formData
+      )
+      .then((resp) => {
+        toast.info("Image Uploaded Successfully to cloudinary");
+        setFormValue({ ...formValue, imageUrl: resp.data.url });
+      })
+      .catch((err) => {
+        toast.error("Something went wrong in uploading image to cloudinary!");
+      });
+  };
+
+  const onCategoryChange = (e) => {
+    setCategoryErrMsg(null);
+    setFormValue({ ...formValue, category: e.target.value });
+  };
+
   return (
-    <form className="grid grid-cols-12 gap-3 mt-10 ml-4 mr-4" onSubmit={handleSubmit}>
-      <p className="text-2xl font-bold col-span-12">Add Blog</p>
+    <form
+      className="grid gap-4 mt-24"
+      noValidate
+      onSubmit={handleSubmit}
+    >
+      <p className="text-2xl font-bold">{editMode ? "Update Blog" : "Add Blog"}</p>
 
-      <div className="col-span-12">
-        <label htmlFor="blogTitle" className="block text-gray-700 font-bold mb-2">
-          Title
-        </label>
-        <input
-          type="text"
-          name="title"
-          className="border rounded-md px-3 py-2 w-full"
-          value={title}
-          onChange={onInputChange}
-          required
-        />
-      </div>
+      <div className="mx-auto p-4 max-w-md">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+            Title
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="title"
+            type="text"
+            name="title"
+            value={title || ""}
+            onChange={onInputChange}
+            required
+          />
+        </div>
 
-      <div className="col-span-12">
-        <label htmlFor="blogContent" className="block text-gray-700 font-bold mb-2">
-          Description
-        </label>
-        <textarea
-          className="border rounded-md px-3 py-2 w-full"
-          rows={4}
-          value={description}
-          name="description"
-          onChange={onInputChange}
-          required
-          placeholder="Please provide a description"
-        />
-      </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+            Description
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="description"
+            name="description"
+            value={description || ""}
+            onChange={onInputChange}
+            rows={4}
+            required
+          />
+        </div>
 
-      <div className="col-span-12">
-        <label htmlFor="blogImage" className="block text-gray-700 font-bold mb-2">
-          Image
-        </label>
-        <input
-          type="file"
-          className="border rounded-md px-3 py-2 w-full"
-          name="imageUrl"
-          onChange={onInputChange}
-          required
-        />
-      </div>
+        {!editMode && (
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="file">
+              Upload Image
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="file"
+              type="file"
+              onChange={(e) => onUploadImage(e.target.files[0])}
+              required
+            />
+          </div>
+        )}
 
-      <div className="col-span-12">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-        >
-          Add
-        </button>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+            Category
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="category"
+            onChange={onCategoryChange}
+            value={category}
+          >
+            <option value="">Please select category</option>
+            {options.map((option, index) => (
+              <option value={option || ""} key={index}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {categoryErrMsg && (
+          <div className="text-red-500 text-xs italic">{categoryErrMsg}</div>
+        )}
+
+        <div className="flex space-x-4">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            {editMode ? "Update" : "Add"}
+          </button>
+          <button
+            type="button"
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={() => navigate("/")}
+          >
+            Go Back
+          </button>
+        </div>
       </div>
     </form>
   );
-}
+};
 
 export default AddEditBlog;

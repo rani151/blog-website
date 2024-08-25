@@ -1,50 +1,75 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaTrash, FaEdit } from 'react-icons/fa';
-import { Card, CardImage, CardTitle, CardText, CardBody, Col } from 'react-tailwindcss'; // Import Tailwind CSS components
+import React from "react";
+import { Link } from "react-router-dom";
+import Badge from "./Badge";
 
-const Blogs =(
-    { 
-        imageUrl, 
-        title, 
-        description, 
-        id, 
-        excerpt, 
-        handleDelete 
-    }) => {
+
+const Blogs = ({
+  title,
+  category,
+  description,
+  id,
+  imageUrl,
+  excerpt,
+  handleDelete,
+}) => {
   return (
-    <Col size="4">
-      <Card className="h-100 mt-2" style={{ maxWidth: '22rem' }}>
-        <CardImage
+    <div className="w-full sm:w-1/2 md:w-1/3 p-2">
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden h-full">
+        <img
           src={imageUrl}
           alt={title}
-          position="top"
-          className="max-w-full h-48" // Tailwind CSS class for max width and height
+          className="w-full h-48 object-cover"
         />
-        <CardBody>
-          <CardTitle className="text-xl font-bold">{title}</CardTitle>
-          <CardText className="text-gray-700">{excerpt(description)}</CardText>
-          <Link to={`/blog/${id}`} className="text-blue-500 hover:underline">
-            Read More
-          </Link>
-          
-          <span className="flex items-center space-x-2">
-      <button
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded"
-        onClick={() => handleDelete(id)}
-      >
-        <FaTrash className="mr-2" />
-        Delete
-      </button>
-      <Link to={`/editBlog/${id}`} className="text-blue-500 hover:underline">
-        <FaEdit className="mr-2" />
-        Edit
-      </Link>
-    </span>
-        </CardBody>
-      </Card>
-    </Col>
+        <div className="p-4">
+          <h5 className="text-lg font-bold mb-2">{title}</h5>
+          <p className="text-gray-700">
+            {excerpt(description)}
+            <Link to={`/blog/${id}`} className="text-blue-500 ml-1">
+              Read More
+            </Link>
+          </p>
+          <Badge>{category}</Badge>
+          <div className="flex items-center mt-2">
+            <button
+              className="text-red-500 hover:text-red-700"
+              onClick={() => handleDelete(id)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <Link to={`/editBlog/${id}`} className="ml-4 text-blue-500 hover:text-blue-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 20h9m-9 0h-2.586a1 1 0 01-.707-1.707L18 10a1 1 0 011.707.707V17a1 1 0 01-1 1h-6z"
+                />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default Blogs;

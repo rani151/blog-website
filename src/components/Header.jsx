@@ -8,8 +8,8 @@ function Header() {
     <img src={logo} className='w-[70px] ml-4' />
     <ul className='hidden md:flex gap-4 md:gap-14  text-black'>
         <li className='hover:font-bold cursor-pointer' onClick={()=>navigate('/')}>Home</li>
-        <li className='hover:font-bold cursor-pointer' >About Us</li>
-        <li className='hover:font-bold cursor-pointer'>Contact Us</li>
+        <li className='hover:font-bold cursor-pointer'onClick={()=>navigate('/addblog')} >Add blog</li>
+        <li className='hover:font-bold cursor-pointer'onClick={()=>navigate('/about')}>about</li>
     </ul>
     <button className='bg-gray-400 rounded-full text-black flex items-center text-[14px]  mr-6'>
         My Blogs </button>
