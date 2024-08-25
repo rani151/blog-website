@@ -9,7 +9,10 @@ This is a simple blog test website built using ReactJS, Tailwind CSS, and JSON.
 
 - **JSON:** A lightweight data-interchange format for storing and exchanging data.
 
-## run 
+## Running the Development Server
 
-cd blogwebsite
-npm run dev 
+1. Navigate to the project directory:
+
+   ```bash
+   cd blogwebsite
+   npm run dev
